@@ -2,9 +2,9 @@ Nicco - Web Scraping (beautiful soup 4)
 
 Jathan - GUI (Tkinter / Kivy)
 
-Nik - Pick from the rest of options (Firebase or Read in and out)
+Nik - Reading in and out
 
-Blake - Whatever isnt taken
+Blake - Firebase
 
 
 1. Create App that will scrape emails from website
