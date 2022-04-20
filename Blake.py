@@ -12,39 +12,75 @@ firebase = firebase.FirebaseApplication("https://zombie-email-scraper-default-rt
 def Create():
     name = input("Insert name here: ")
     email = input("Insert email here: ")
-    phoneNumber = input("Insert phone number here: ")
+    
+    newName = name.lower()
+    print(newName)
     
     data = {
-        'Name': name,
-        'Email':email,
-        'Phone':phoneNumber
+        'name': newName,
+        'email':email
     }
 
-    result = firebase.post(f'/Zombie/Information/{name}', data)
+    result = firebase.post(f'/Zombie/Information/{newName}', data)
+    
+    global x
+    x = result.get('name')
+    print (x)
+    
+    # print (list(iter(result)))
+    
+    # for i in result:
+    #     print( i, result[i])
+    
+    print(result.keys())
     print(result)
 
 def Read():
     userName = input("Input name you would like to read: ")
-    result = firebase.get(f'/Zombie/Information/{userName}', '')
+    newName = userName.lower()
+    
+    result = firebase.get(f'/Zombie/Information/{newName}', '')
+    
+    # x = result.get("Name")
+    # print(x)
+    for i in result:
+        print(i)
     print(result)
 
 def Update():
     userName = input("Input name you would like to update: ")
-    userInput = input("Input the subject you would like to change (Email, Name, Phone): ")
+    userInput = input("Input the subject you would like to change (Email, Name): ")
     userInput2 = input("Input what you would like to change it to: ")
-    firebase.put(f'/Zombie/Information/{userName}/-N02rTKR0OYxvwfPl_S1', userInput, userInput2)
+    
+    newName = userName.lower()
+    newUserInput = userInput.lower()
+    newUserInput2 = userInput2.lower()
+    
+    result = firebase.get(f'/Zombie/Information/{newName}', '')
+    for x in result:
+        print(x)
+    # x= result.get('name')
+    # print(x)
+    
+    if (newUserInput=="name"):
+        result = firebase.put(f'/Zombie/Information/{newName}/{x}', newUserInput, newUserInput2)
+    
+    
+    
     print("Updated")
 
 def Delete():
     userName = input("Input name you would like to delete: ")
-    firebase.delete(f'Zombie/Information/{userName}', "")
+    newName = userName.lower()
+
+    firebase.delete(f'Zombie/Information/{newName}', "")
     print("Deleted")
 
 
 
 
 def option():
-    i = input("Input def you want: ")
+    i = input("Input C R U D: ")
     match i:
         case "C":
             Create()
