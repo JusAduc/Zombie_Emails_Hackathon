@@ -1,6 +1,7 @@
 # pip install requests
 # pip install python-firebase
 # pip install git+https://github.com/ozgur/python-firebase
+# FirebaseInstallations.getId()
 
 from firebase import firebase
 firebase = firebase.FirebaseApplication("https://zombie-email-scraper-default-rtdb.firebaseio.com/", None)
@@ -8,10 +9,10 @@ firebase = firebase.FirebaseApplication("https://zombie-email-scraper-default-rt
 
 
 
-def CofCRUD():
-    name = input("Instert name here: ")
-    email = input("Instert email here: ")
-    phoneNumber = input("Instert phone number here: ")
+def Create():
+    name = input("Insert name here: ")
+    email = input("Insert email here: ")
+    phoneNumber = input("Insert phone number here: ")
     
     data = {
         'Name': name,
@@ -19,20 +20,24 @@ def CofCRUD():
         'Phone':phoneNumber
     }
 
-    result = firebase.post('/Zombie/Information', data)
+    result = firebase.post(f'/Zombie/Information/{name}', data)
     print(result)
 
-
-def RofCRUD():
-    result = firebase.get('/Zombie/Information', '')
+def Read():
+    userName = input("Input name you would like to read: ")
+    result = firebase.get(f'/Zombie/Information/{userName}', '')
     print(result)
 
-def UofCRUD():
-    firebase.put('/Zombie/Information/-N01Ak-3QXyyMrii2p45', 'Name', 'Blake Yaratch')
+def Update():
+    userName = input("Input name you would like to update: ")
+    userInput = input("Input the subject you would like to change (Email, Name, Phone): ")
+    userInput2 = input("Input what you would like to change it to: ")
+    firebase.put(f'/Zombie/Information/{userName}/-N02rTKR0OYxvwfPl_S1', userInput, userInput2)
     print("Updated")
 
-def DofCRUD():
-    firebase.delete('Zombie/Information', '-N01Ak-3QXyyMrii2p45')
+def Delete():
+    userName = input("Input name you would like to delete: ")
+    firebase.delete(f'Zombie/Information/{userName}', "")
     print("Deleted")
 
 
@@ -41,14 +46,14 @@ def DofCRUD():
 def option():
     i = input("Input def you want: ")
     match i:
-        case "1":
-            CofCRUD()
-        case "2":
-            RofCRUD()
-        case "3":
-            UofCRUD()
-        case "4":
-            DofCRUD()
+        case "C":
+            Create()
+        case "R":
+            Read()
+        case "U":
+            Update()
+        case "D":
+            Delete()
 
 
 option()
