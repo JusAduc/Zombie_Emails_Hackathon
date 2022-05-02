@@ -5,32 +5,12 @@
 import Nicco
 from firebase import firebase
 
+p = 0
+
+
 firebase = firebase.FirebaseApplication(
     'https://zombie-email-scraper-default-rtdb.firebaseio.com/', None
 )
-
-global z
-z=0
-
-
-def Create(z=0):
-    
-    if (z==0):
-        name = input('Insert name here: ')
-        email = input('Insert email here: ')
-    else:
-        name = newTeacherName
-        email = oldName
-    
-    print(f'Name: {name}')
-    print(f'Email: {email}')
-
-    newName = name.lower()
-
-    data = {'name': newName, 'email': email}
-    result = firebase.post(f'/Zombie/Information/{newName}', data)
-    x = result.get('name')
-    z=0
 
 
 def scrape():
@@ -46,13 +26,38 @@ def scrape():
     for y in Nicco.mails:
         global newTeacherName
         global oldName
+        global p
         oldName = y.lower()
         teacherName = oldName.replace('@mahoningctc.com', '')
         newTeacherName = teacherName.replace('.', ' ')
-        print(f'Teachers name: {oldName}')
-        print(f'Teachers Email: {newTeacherName}')
-        z = 1
+        print(f'Teachers Email: {oldName}')
+        print(f'Teachers name: {newTeacherName}')
+        p+=1
+        print(p)
         Create()
+
+def Create():
+    print(p)
+    
+    if p==0:
+        name = input('Insert name here: ')
+        email = input('Insert email here: ')
+    elif p>=1:
+        name = newTeacherName
+        email = oldName
+    else:
+        print('Fuck off')
+    
+    print(f'Name: {name}')
+    print(f'Email: {email}')
+
+    newName = name.lower()
+
+    data = {'name': newName, 'email': email}
+    result = firebase.post(f'/Zombie/Information/{newName}', data)
+    x = result.get('name')
+
+
 
 def Read():
     userName = input('Input name you would like to read: ')
@@ -118,6 +123,7 @@ def option():
             Delete()
         case 'N':
             scrape()
+            
 
 
 option()
